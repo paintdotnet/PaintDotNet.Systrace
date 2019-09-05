@@ -26,6 +26,8 @@ These trace files can then be loaded in Chrome by opening a new tab and navigati
 
 Starting with Paint.NET v4.2.2, you can use the `/enableTracing:filename` command-line argument to enable tracing. You can then open that in `chrome://tracing`, or just look at it in a text editor, to get a feel of the file format.
 
+I've also included some sample traces in the `samples` directory.
+
 This is what it looks like:
 
 > ![screenshot](/images/screenshot1.png)

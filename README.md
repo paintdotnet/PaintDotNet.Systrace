@@ -28,6 +28,85 @@ Starting with Paint.NET v4.2.2, you can use the `/enableTracing:filename` comman
 
 I've also included some sample traces in the `samples` directory.
 
+Some code:
+
+```
+sealed class MainForm : Form
+{
+    private Button button;
+    private Label label;
+
+    // This is how I like to do tracing for a constructor
+    public MainForm()
+    {
+        using (Systrace.BeginEvent(nameof(MainForm) + "::ctor"))
+        {
+            ...
+            InitializeComponent();
+            ...
+        }
+    }
+
+    // Other times you don't really need the class prefix in the event name since the method is always called from the constructor
+    private void InitializeComponent()
+    {
+        using (Systrace.BeginEvent(nameof(InitializeComponent)))
+        {
+            // You might want to trace for different segments of code
+            using (Systrace.BeginEvent("instantiate controls"))
+            {
+                this.button = new Button();
+                this.label = new Label();
+            }
+
+            using (Systrace.BeginEvent("initialize controls"))
+            {
+                this.button.Click += ...;
+                this.button.Text = ...;
+
+                this.label.Text = ...;
+            }
+
+            using (Systrace.BeginEvent("add controls"))
+            {
+                SuspendLayout();
+                this.Controls.Add(this.button);
+                this.Controls.Add(this.label);
+                ResumeLayout();
+            }
+            ...
+        }
+    }
+
+    // An example where you want a trace event for a specific method
+    protected override void OnLayout(LayoutEventArgs levent)
+    {
+        using (Systrace.BeginEvent(nameof(MainForm) + "::" + nameof(OnLayout))) // "MainForm::OnLayout"
+        {
+            ... layout code goes here ...
+            base.OnLayout(levent);
+        }
+    }
+
+    // And sometimes you want a trace event that spans method calls ...
+    private Systrace.BeginEventScope resizeTracingScope;
+
+    protected override void OnResizeBegin(EventArgs e)
+    {
+        this.resizeTracingScope = Systrace.BeginEvent(nameof(MainForm) + "::Resize");
+        ...
+        base.OnResizeBegin(e);
+    }
+
+    protected override void OnResizeEnd(EventArgs e)
+    {
+        ...
+        base.OnResizeBegin(e);
+        this.resizeTracingScope.Dispose(); // no need to check for null because it's a struct and can't be null
+    }
+}
+```
+
 This is what it looks like:
 
 > ![screenshot](/images/screenshot1.png)

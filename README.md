@@ -107,7 +107,7 @@ sealed class MainForm : Form
 }
 ```
 
-This is what it looks like:
+This is what it looks like, using one of the sample trace from the `samples` directory:
 
 > ![screenshot](/images/screenshot1.png)
 

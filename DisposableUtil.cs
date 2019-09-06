@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace PaintDotNet
 {
-    public static class DisposableUtil
+    internal static class DisposableUtil
     {
         /// <summary>
         /// Disposes the given object reference, if it is non-null. If the reference is non-null, it will then be set to null.

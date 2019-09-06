@@ -11,7 +11,7 @@ using System.Threading;
 namespace PaintDotNet
 {
     [Serializable]
-    public abstract class Disposable
+    internal abstract class Disposable
         : IDisposable,
           IIsDisposed
     {

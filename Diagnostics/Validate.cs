@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace PaintDotNet.Diagnostics
 {
-    public static class Validate
+    internal static class Validate
     {
         private static void ThrowArgumentNullException(string paramName)
         {

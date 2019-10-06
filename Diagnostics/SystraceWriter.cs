@@ -62,13 +62,12 @@ namespace PaintDotNet.Diagnostics
             }
         }
 
-        public void Close()
+        public void WriteEnd()
         {
             lock (this.sync)
             {
                 this.textWriter.WriteLine(" ]");
                 this.textWriter.Flush();
-                this.textWriter = null;
             }
         }
     }

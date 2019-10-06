@@ -39,6 +39,7 @@ namespace PaintDotNet.Diagnostics
 
         protected override void Dispose(bool disposing)
         {
+            writer.WriteEnd();
             DisposableUtil.Free(ref this.writer, disposing);
             this.textWriter = null;
             this.stream = null;
@@ -74,7 +75,6 @@ namespace PaintDotNet.Diagnostics
                     Thread.CurrentThread.ManagedThreadId);
 
                 this.systraceEvent.Session.writer.WriteEvent(this.systraceEvent);
-                this.systraceEvent.Session.stream.Flush(false);
             }
 
             public void Dispose()
@@ -84,8 +84,6 @@ namespace PaintDotNet.Diagnostics
                     this.systraceEvent.EventType = SystraceEventTypes.DurationEnd;
                     this.systraceEvent.TimestampMicroseconds = this.systraceEvent.Session.GetCurrentTimestampMicroseconds();
                     this.systraceEvent.Session.writer.WriteEvent(this.systraceEvent);
-                    this.systraceEvent.Session.stream.Flush(false);
-
                     this.systraceEvent = null;
                 }
             }

@@ -10,7 +10,7 @@ using System;
 
 namespace PaintDotNet.Diagnostics
 {
-    internal sealed class SystraceEvent
+    internal struct SystraceEvent
     {
         public SystraceSession Session
         {

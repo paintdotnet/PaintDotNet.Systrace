@@ -40,6 +40,7 @@ namespace PaintDotNet.Diagnostics
         public static void Uninitialize()
         {
             DisposableUtil.Free(ref session);
+            // The end of the trace json is not correct, but it's ok. 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -17,7 +17,7 @@ namespace PaintDotNet.Diagnostics
     {
         private FileStream stream;
         private TextWriter textWriter;
-        private SystraceWriter writer;
+        private SystraceWriterMQ writer;
         private readonly Stopwatch stopwatch;
         private readonly long timestampNumerator;
         private readonly long timestampDenominator;
@@ -27,7 +27,7 @@ namespace PaintDotNet.Diagnostics
         {
             this.stream = Validate.IsNotNull(stream, nameof(stream));
             this.textWriter = new StreamWriter(this.stream, Encoding.UTF8, 4096, false);
-            this.writer = new SystraceWriter(this.textWriter, false);
+            this.writer = new SystraceWriterMQ(this.textWriter, false);
 
             this.processID = Process.GetCurrentProcess().Id;
 
@@ -39,7 +39,6 @@ namespace PaintDotNet.Diagnostics
 
         protected override void Dispose(bool disposing)
         {
-            writer.WriteEnd();
             DisposableUtil.Free(ref this.writer, disposing);
             this.textWriter = null;
             this.stream = null;
@@ -79,13 +78,9 @@ namespace PaintDotNet.Diagnostics
 
             public void Dispose()
             {
-                if (this.systraceEvent != null)
-                {
-                    this.systraceEvent.EventType = SystraceEventTypes.DurationEnd;
-                    this.systraceEvent.TimestampMicroseconds = this.systraceEvent.Session.GetCurrentTimestampMicroseconds();
-                    this.systraceEvent.Session.writer.WriteEvent(this.systraceEvent);
-                    this.systraceEvent = null;
-                }
+                this.systraceEvent.EventType = SystraceEventTypes.DurationEnd;
+                this.systraceEvent.TimestampMicroseconds = this.systraceEvent.Session.GetCurrentTimestampMicroseconds();
+                this.systraceEvent.Session.writer.WriteEvent(this.systraceEvent);
             }
         }
     }

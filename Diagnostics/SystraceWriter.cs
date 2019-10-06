@@ -38,8 +38,6 @@ namespace PaintDotNet.Diagnostics
 
         public void WriteEvent(SystraceEvent systraceEvent)
         {
-            Validate.IsNotNull(systraceEvent, nameof(systraceEvent));
-
             lock (this.sync)
             {
                 if (this.isFirstEvent)

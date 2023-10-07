@@ -30,7 +30,7 @@ I've also included some sample traces in the `samples` directory.
 
 Some code:
 
-```
+```cs
 sealed class MainForm : Form
 {
     private Button button;
